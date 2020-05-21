@@ -1,5 +1,7 @@
 pragma solidity >=0.4.21 <0.7.0;
 
+import "./DSMath.sol";
+
 
 interface IERC20 {
     function balanceOf(address _owner) external view returns (uint256);
@@ -7,6 +9,8 @@ interface IERC20 {
 
 
 contract Voting {
+    using DSMath for uint256;
+
     IERC20 public token;
 
     uint256 public startTime;
@@ -36,6 +40,10 @@ contract Voting {
         uint16 _majority_permillage
     ) public {
         require(now < _end, "Please input a future end time");
+        require(
+            _majority_permillage <= 1000,
+            "Please input a valid majority_permillage [0 - 1000]"
+        );
 
         token = IERC20(_token);
         startTime = _start;
@@ -60,7 +68,7 @@ contract Voting {
             uint256 option = voteRecord[acc] - 1;
             uint256 weight = token.balanceOf(acc);
 
-            result[option] += weight;
+            result[option] = result[option].add(weight);
         }
 
         return result;
@@ -77,14 +85,14 @@ contract Voting {
         uint256 total = 0;
 
         for (i = 0; i < len; ++i) {
-            total += status[i];
+            total = total.add(status[i]);
         }
 
         if (total >= threshold) {
             isValid = true;
 
             // Check finalization only when it is valid
-            uint256 majority = (total / 1000) * majority_permillage;
+            uint256 majority = total.div(1000).mul(majority_permillage);
             for (i = 0; i < len; ++i) {
                 if (status[i] >= majority) {
                     isFinalized = true;
