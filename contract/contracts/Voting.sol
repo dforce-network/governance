@@ -97,9 +97,7 @@ contract Voting {
     }
 
     function vote(uint256 _option) external {
-        require(now > startTime, "Voting has not Started yet");
-        require(now < endTime, "Voting has ended");
-        require(!isFinalized, "Voting has been finalized");
+        require(isAlive(), "Voting is not alive, you can not vote!");
         require(
             _option > 0 && _option <= optionCount,
             "Please choose a valid option"
