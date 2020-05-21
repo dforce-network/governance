@@ -12,8 +12,12 @@ contract Voting {
     uint256 public startTime;
     uint256 public endTime;
     uint256 public optionCount;
-    uint256 public threshold; // The threshold for the vote result to be valid
-    uint256 public majority; // If the votes for one option has reached majority, then it is finalized
+    // The absulute threshold number with decimal for the vote result to be valid
+    // Typical value could be 50000000000000000000000000 as 5% of df total supply
+    uint256 public threshold;
+    // The permillage of majority. If the votes for one option has reached majority portion, then it is finalized
+    // Typical value could be 800
+    uint16 public majority_permillage;
 
     bool public isFinalized;
     bool public isValid;
@@ -29,13 +33,9 @@ contract Voting {
         uint256 _end,
         uint256 _optionCount,
         uint256 _threshold,
-        uint256 _majority
+        uint16 _majority_permillage
     ) public {
         require(now < _end, "Please input a future end time");
-        require(
-            _threshold < _majority,
-            "Please make sure majority > threshold"
-        );
 
         token = IERC20(_token);
         startTime = _start;
@@ -43,7 +43,7 @@ contract Voting {
         optionCount = _optionCount;
         status = new uint256[](_optionCount);
         threshold = _threshold;
-        majority = _majority;
+        majority_permillage = _majority_permillage;
 
         isFinalized = false;
         isValid = false;
@@ -70,40 +70,40 @@ contract Voting {
         return (now > startTime) && (now < endTime) && !isFinalized;
     }
 
-    function checkForFinalization() private {
-        uint256 len = status.length;
-        uint256 i;
-
-        for (i = 0; i < len; ++i) {
-            if (status[i] > majority) {
-                isFinalized = true;
-                return;
-            }
-        }
-    }
-
     // This would re-check the validation every time, even it is deemed valid before
-    function checkForValidation() private {
+    function checkForValidationAndFinalization() private {
         uint256 len = status.length;
         uint256 i;
         uint256 total = 0;
 
         for (i = 0; i < len; ++i) {
             total += status[i];
-            if (total > threshold) {
-                isValid = true;
-                return;
-            }
         }
 
-        isValid = false;
+        if (total >= threshold) {
+            isValid = true;
+
+            // Check finalization only when it is valid
+            uint256 majority = (total / 1000) * majority_permillage;
+            for (i = 0; i < len; ++i) {
+                if (status[i] >= majority) {
+                    isFinalized = true;
+                    return;
+                }
+            }
+        } else {
+            isValid = false;
+        }
     }
 
     function vote(uint256 _option) external {
         require(now > startTime, "Voting has not Started yet");
         require(now < endTime, "Voting has ended");
         require(!isFinalized, "Voting has been finalized");
-        require(_option - 1 < optionCount, "Please choose a valid option");
+        require(
+            _option > 0 && _option <= optionCount,
+            "Please choose a valid option"
+        );
         //require(voteRecord[msg.sender] == 0, "You have voted already");
         require(token.balanceOf(msg.sender) != 0, "You have no toke available");
 
@@ -115,8 +115,7 @@ contract Voting {
 
         status = getLiveStatus();
 
-        checkForFinalization();
-        checkForValidation();
+        checkForValidationAndFinalization();
     }
 
     function getTotalVote() external view returns (uint256[] memory) {
