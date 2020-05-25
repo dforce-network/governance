@@ -129,8 +129,6 @@ contract Voting {
     }
 
     function getTotalVote() external view returns (uint256[] memory) {
-        require(now > startTime, "Voting has not Started yet");
-
         if (isAlive()) {
             return getLiveStatus();
         } else {

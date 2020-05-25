@@ -47,16 +47,6 @@ contract("Voting test", async accounts => {
             console.log(err.message);
             assert.ok(/revert/.test(err.message));
         }
-
-        // Should throw a error when try to get vote status
-        try {
-            await voting.getTotalVote();
-            assert.fail();
-        } catch (err) {
-            console.log(err.message);
-            assert.ok(/revert/.test(err.message));
-        }
-
     });
 
     it("2 OPTIONS: should be all 0 for the initial voting status", async () => {
@@ -297,15 +287,6 @@ contract("Voting test", async accounts => {
             assert.ok(/revert/.test(err.message));
         }
 
-        // Should throw a error when try to get vote status
-        try {
-            await voting.getTotalVote();
-            assert.fail();
-        } catch (err) {
-            console.log(err.message);
-            assert.ok(/revert/.test(err.message));
-        }
-
         await voting.setStartTime(now - 10);
     });
 
@@ -460,15 +441,6 @@ contract("Voting test", async accounts => {
         // Should not be able to vote
         try {
             await voting.vote(1, { from: accounts[1] });
-            assert.fail();
-        } catch (err) {
-            console.log(err.message);
-            assert.ok(/revert/.test(err.message));
-        }
-
-        // Should throw a error when try to get vote status
-        try {
-            await voting.getTotalVote();
             assert.fail();
         } catch (err) {
             console.log(err.message);
