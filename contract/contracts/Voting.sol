@@ -21,7 +21,7 @@ contract Voting {
     uint256 public threshold;
     // The permillage of majority. If the votes for one option has reached majority portion, then it is finalized
     // Typical value could be 800
-    uint16 public majority_permillage;
+    uint16 public majorityPermillage;
 
     bool public isFinalized;
     bool public isValid;
@@ -37,7 +37,7 @@ contract Voting {
         uint256 _end,
         uint256 _optionCount,
         uint256 _threshold,
-        uint16 _majority_permillage
+        uint16 _majorityPermillage
     ) public {
         require(
             _start < _end,
@@ -45,8 +45,8 @@ contract Voting {
         );
         require(now < _end, "Please input a future end time");
         require(
-            _majority_permillage <= 1000,
-            "Please input a valid majority_permillage [0 - 1000]"
+            _majorityPermillage <= 1000,
+            "Please input a valid majorityPermillage [0 - 1000]"
         );
 
         token = IERC20(_token);
@@ -55,7 +55,7 @@ contract Voting {
         optionCount = _optionCount;
         status = new uint256[](_optionCount);
         threshold = _threshold;
-        majority_permillage = _majority_permillage;
+        majorityPermillage = _majorityPermillage;
 
         isFinalized = false;
         isValid = false;
@@ -96,7 +96,7 @@ contract Voting {
             isValid = true;
 
             // Check finalization only when it is valid
-            uint256 majority = total.div(1000).mul(majority_permillage);
+            uint256 majority = total.div(1000).mul(majorityPermillage);
             for (i = 0; i < len; ++i) {
                 if (status[i] >= majority) {
                     isFinalized = true;
