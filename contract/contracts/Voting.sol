@@ -39,6 +39,10 @@ contract Voting {
         uint256 _threshold,
         uint16 _majority_permillage
     ) public {
+        require(
+            _start < _end,
+            "Please make sure start time is earlier than end time"
+        );
         require(now < _end, "Please input a future end time");
         require(
             _majority_permillage <= 1000,
