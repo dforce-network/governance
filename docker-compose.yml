@@ -31,9 +31,6 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: frontend.dockerfile
-      args:
-        FRONTEND_ENV: dev
+      context: ./web
     ports:
         - "80:80"
