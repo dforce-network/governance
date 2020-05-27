@@ -1,0 +1,46 @@
+.container {
+  &__banner {
+    position: relative;
+
+    &_bg {
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+      position: absolute;
+      background: url(../../assets/banner.png) no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    article {
+      z-index: 100;
+      position: relative;
+      width: 784px;
+      margin: 70px auto 0;
+      overflow: hidden;
+      text-align: center;
+
+      h1 {
+        color: #070237;
+        font-size: 38px;
+        font-weight: 500;
+      }
+
+      p {
+        color: #070237;
+        font-size: 18px;
+        font-weight: 400;
+        margin: 29px 0 64px;
+
+        a {
+          color: #D5A24E;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
