@@ -1,7 +1,4 @@
-html, body, #root {
-  height: 100%;
-}
-
-body {
+body, div, section, article {
   margin: 0;
+  padding: 0;
 }

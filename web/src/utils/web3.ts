@@ -1,43 +1,71 @@
 import Web3 from 'web3';
 import config from './config';
-import USRABI from '../abi/USR.abi.json';
-import USDxABI from '../abi/USDx.abi.json';
+import DFABI from '../abi/DF.abi.json';
+import VotingABI from '../abi/Voting.abi.json';
+// import USDxABI from '../abi/USDx.abi.json';
 import { message } from 'antd';
-import { toFixed, saveTransactions, updateTransactionStatus, timeFormatter } from './index';
-
-// let Decimal = require('decimal.js-light');
-// Decimal = require('toformat')(Decimal);
-//
-// export const WadDecimal = Decimal.clone({
-//   rounding: 1, // round down
-//   precision: 78,
-//   toExpNeg: -18,
-//   toExpPos: 78,
-// })
-//
-// WadDecimal.format = {
-//   groupSeparator: ",",
-//   groupSize: 3,
-// }
-
+import { toFixed } from './index';
+import moment from 'moment';
 
 // set up contracts
 export function setupContracts(dispatch) {
-  const { web3, network } = this.props.governance;
-  let networkName = network == 1 ? 'main' :'rinkeby';
+  const { web3, network } = this.props.common;
+  const networkName = network == 1 ? 'main' :'rinkeby';
 
-  dispatch('usrObj', new web3.eth.Contract(USRABI, config[networkName].USR));
-  dispatch('usdxObj', new web3.eth.Contract(USDxABI, config[networkName].USDx));
+  const tokenID = this.props.match.params.id || config[networkName].Voting;
+
+  dispatch('DFObj', new web3.eth.Contract(DFABI, config[networkName].DF));
+  dispatch('votingObj', new web3.eth.Contract(VotingABI, tokenID));
 }
 
 // get balance of usr and usdx
-export async function getData() {
-  await allowance.bind(this)();
+export async function getVotingData() {
+  // await allowance.bind(this)();
+  const { votingObj, walletAddress } = this.props.common;
+  const startTime = await votingObj.methods.startTime().call();
+  const endTime = await votingObj.methods.endTime().call();
+  const optionCount = await votingObj.methods.optionCount().call();
+  const totalVote = await votingObj.methods.getTotalVote().call();
+  const voteRecord = await votingObj.methods.getVoteRecord(walletAddress).call();
+  const isAlive = await votingObj.methods.isAlive().call();
+  const currentTime = (new Date()).getTime();
+  let voteStatus = 'voting';
+
+  // 判断投票状态 是 ： notStart, ongoing, closed
+  if (currentTime < startTime * 1000) {
+    // 未开始
+    voteStatus = 'notStart';
+  } else if (currentTime >= startTime * 1000 && currentTime <= endTime * 1000) {
+    voteStatus = 'ongoing';
+    if (!isAlive) {
+      voteStatus = 'closed';
+    }
+  } else {
+    voteStatus = 'closed';
+  }
+
+  // console.log(voteStatus);
+  // console.log(totalVote);
+  // console.log(voteRecord);
+  // console.log(isAlive);
+
+  this.props.dispatch({
+    type: 'governance/updateVotingData',
+    payload: {
+      startTime,
+      endTime,
+      optionCount,
+      totalVote,
+      voteRecord,
+      isAlive,
+      voteStatus,
+    },
+  });
 }
 
 // approval
 export async function approval() {
-  const { usdxObj, usrObj, walletAddress } = this.props.usr;
+  const { usdxObj, usrObj, walletAddress } = this.props.common;
   return usdxObj.methods.approve(usrObj.options.address, '-1')
     .send({ from: walletAddress })
     .then(() => {
@@ -48,12 +76,12 @@ export async function approval() {
 
 // get allowance data
 export async function allowance() {
-  const { usdxObj, usrObj, walletAddress, network } = this.props.usr;
+  const { usdxObj, usrObj, walletAddress, network } = this.props.common;
   const networkName = network == 1 ? 'main' : 'rinkeby';
   const allowanceResult = await usdxObj.methods.allowance(walletAddress, config[networkName].USR).call();
 
   this.props.dispatch({
-    type: 'governance/updateMultiParams',
+    type: 'common/updateMultiParams',
     payload: {
       allowanceResult: +allowanceResult
     }
@@ -65,7 +93,7 @@ export async function initBrowserWallet(dispatch) {
   if (!dispatch) {
     dispatch = (name, value) => {
       this.props.dispatch({
-        type: 'governance/updateParams',
+        type: 'common/updateParams',
         payload: {
           name,
           value
@@ -75,11 +103,9 @@ export async function initBrowserWallet(dispatch) {
   }
 
   dispatch('walletLoading', true);
-  // if (!localStorage.getItem('walletKnown') && !prompt) return;
 
   let web3Provider;
 
-  // Initialize web3 (https://medium.com/coinmonks/web3-js-ethereum-javascript-api-72f7b22e2f0a)
   if (window.ethereum) {
     web3Provider = window.ethereum;
     try {
@@ -92,9 +118,6 @@ export async function initBrowserWallet(dispatch) {
 
     if (window.ethereum.on) {
       window.ethereum.on('accountsChanged', (accounts) => {
-        this.props.dispatch({
-          type: 'governance/resetInput'
-        });
         initBrowserWallet.bind(this)();
       });
     }
@@ -122,7 +145,7 @@ export async function initBrowserWallet(dispatch) {
   dispatch('walletAddress', accounts[0]);
   dispatch('walletType', walletType);
 
-  // setupContracts.bind(this)(dispatch);
+  setupContracts.bind(this)(dispatch);
 
-  // getData.bind(this)();
+  getVotingData.bind(this)();
 }

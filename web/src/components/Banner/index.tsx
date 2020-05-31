@@ -1,8 +1,14 @@
 import React from 'react';
 import styles from './index.less';
 import PageHeader from '@components/PageHeader';
+import { renderContentFromKey } from '@utils';
+import { formatMessage } from 'umi-plugin-locale';
 
 export default class Banner extends React.Component {
+  renderContent = (key: string) => {
+    return renderContentFromKey.bind(this)(key);
+  }
+
   render() {
     return (
       <div className={styles.container__banner}>
@@ -10,10 +16,10 @@ export default class Banner extends React.Component {
         <div className={styles.container__banner_bg}></div>
 
         <article>
-          <h1>dForce Governance Call</h1>
+          <h1>{ this.renderContent('vote_title') }</h1>
 
           <p>
-            We have identified three key concerns with DAI and would like to implement a governance poll through voting system. Threekey concerns are respectively stability issue, complexities of MCD, and high friction of trading DAI <a>More...</a>
+            { this.renderContent('Description') } <a href={ this.renderContent('more') } target="_blank">{ formatMessage({id: 'common.more'}) }</a>
           </p>
         </article>
       </div>

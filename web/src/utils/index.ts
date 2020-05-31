@@ -1,20 +1,23 @@
 // format account address
 import numeral from 'numeral';
 import moment from 'moment';
+import { getLocale } from 'umi-plugin-locale';
 
 // format time
-export function timeFormatter(time) {
+export function timeFormatter(time: string) {
   return moment(time).format('YYYY-MM-DD HH:mm:ss');
 }
 
 // format time
-export function transTimeFormatter(time: string) {
-  moment.locale('en');
+export function localTimeFormatter(time: string) {
+  let currentLanguage = getLocale();
+  let isEn = ['en-US', 'en'].indexOf(currentLanguage) >= 0;
+  moment.locale(currentLanguage);
 
   let timeobj = moment(time);
   let timePrefix = timeobj.format('LL');
   let timeEnd = timeobj.format('HH:mm:ss');
-  return `${timePrefix} at ${timeEnd}`;
+  return `${timePrefix} ${isEn ? 'at' : ''} ${timeEnd}`;
 }
 
 // account formatter
@@ -73,6 +76,50 @@ export function formatCurrencyNumber(b) {
   return '0';
 }
 
+export function formatVoteNum(b) {
+  if (b === '...') return b;
+  if (b > 0) {
+    return numeral(b / 1e18).format('0,0.00')
+  }
+  return '0';
+}
+
 export function isMobileDevice() {
   return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+}
+
+export function renderContentFromKey(key: string) {
+  const currentLanguage = getLocale();
+  const showKey = currentLanguage === 'en-US' ? 'info_en' : 'info_cn';
+  const { voteDetailData } = this.props.governance;
+
+  if (this.props.loading || this.props.loading === undefined) {
+    return '...';
+  }
+  if (voteDetailData.hasOwnProperty(showKey)) {
+    let targetObj = voteDetailData[showKey];
+    if (targetObj.hasOwnProperty(key)) {
+      return targetObj[key];
+    }
+  }
+}
+
+export function sumArray(arr) {
+  if (!arr.length) return 0;
+  return arr.reduce((prev, curr, idx, arr) => {
+    return (+prev) + (+curr);
+  });
+}
+
+export function formatPercent(i, arr) {
+  let num = +i;
+  let sumNum = sumArray(arr);
+
+  if (num > 0) {
+    if (sumNum > 0) {
+      return (num / sumNum * 100).toFixed(2) + '%';
+    }
+    return '...';
+  }
+  return '...';
 }

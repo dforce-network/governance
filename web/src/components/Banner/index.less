@@ -35,10 +35,32 @@
 
         a {
           color: #D5A24E;
+          margin-left: 10px;
 
           &:hover {
             text-decoration: underline;
           }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    &__banner {
+      overflow: hidden;
+
+      article {
+        width: 85%;
+        margin: 34px auto 0;
+
+        h1 {
+          font-size: 19px;
+        }
+        p {
+          font-size: 12px;
+          margin: 14px 0 28px;
         }
       }
     }

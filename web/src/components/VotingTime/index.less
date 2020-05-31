@@ -30,13 +30,41 @@
     margin: 20px auto 40px;;
 
     span {
-      font-size: 18px;
+      font-size: 32px;
       color: #070237;
+      font-weight: bold;
       padding-left: 10px;
 
       label {
         color: #9F9DB4;
         padding-left: 10px;
+        font-size: 18px;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .box {
+    &__header {
+      section {
+        height: 30px;
+        span {
+          height: 30px;
+          line-height: 30px;
+          font-size: 12px;
+        }
+      }
+    }
+
+    &__time {
+      margin: 10px 0 23px;
+      span {
+        font-size: 16px;
+        label {
+          font-size: 12px;
+        }
       }
     }
   }

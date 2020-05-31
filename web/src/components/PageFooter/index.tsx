@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './index.less';
 import { message, Dropdown, Menu } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { formatMessage, setLocale } from 'umi-plugin-locale';
+import { formatMessage, getLocale, setLocale } from 'umi-plugin-locale';
 
 const iconTwitter = require('@assets/icon_twitter.svg');
 const iconTelegram = require('@assets/icon_telegram.svg');
@@ -19,9 +19,13 @@ interface PageFooterProps {
 }
 
 const PageFooter: React.FC<PageFooterProps> = (props) => {
-  let currentLanguage = 'en-US';
+  let currentLanguage = getLocale();
+  let isEN = ['en', 'en-US'].indexOf(currentLanguage) >= 0;
 
-  const changeLanguage = (language: string) => {};
+  const changeLanguage = (language: string) => {
+    console.log(language);
+    setLocale(language);
+  };
 
   return (
     <div className={styles.footer}>
@@ -56,9 +60,7 @@ const PageFooter: React.FC<PageFooterProps> = (props) => {
             <img src={iconYoutube} alt="youtube" />
           </a>
           {
-            ['en', 'en-US'].indexOf(currentLanguage) >= 0
-              ? null
-              : (
+            isEN ? null : (
                 <a className={styles.footer__community_wechat} target="_blank">
                   <img src={iconWechat} alt="wechat" />
                   <img className={styles.footer__community_wechat_qr} src={iconWechatQRCode} alt="wechat" />
@@ -71,13 +73,13 @@ const PageFooter: React.FC<PageFooterProps> = (props) => {
           placement="topCenter"
           overlay={(
             <Menu style={{ width: '100px' }}>
-              <Menu.Item onClick={changeLanguage('zh')}>{ formatMessage({ id: 'footer.community.chinese' }) }</Menu.Item>
-              <Menu.Item onClick={changeLanguage('en')}>{ formatMessage({ id: 'footer.community.english' }) }</Menu.Item>
+              <Menu.Item onClick={e => changeLanguage('zh-CN')}>{ formatMessage({ id: 'footer.community.chinese' }) }</Menu.Item>
+              <Menu.Item onClick={e => changeLanguage('en-US')}>{ formatMessage({ id: 'footer.community.english' }) }</Menu.Item>
             </Menu>
           )}
         >
           <label className={styles.footer__community_language}>
-            { currentLanguage === 'en' ? formatMessage({ id: 'footer.community.english' }) : formatMessage({ id: 'footer.community.chinese' }) }
+            { isEN ? formatMessage({ id: 'footer.community.english' }) : formatMessage({ id: 'footer.community.chinese' }) }
             <img src={require('@assets/icon_language_down.svg')} />
           </label>
         </Dropdown>
