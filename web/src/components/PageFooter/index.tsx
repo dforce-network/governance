@@ -23,7 +23,6 @@ const PageFooter: React.FC<PageFooterProps> = (props) => {
   let isEN = ['en', 'en-US'].indexOf(currentLanguage) >= 0;
 
   const changeLanguage = (language: string) => {
-    console.log(language);
     setLocale(language);
   };
 

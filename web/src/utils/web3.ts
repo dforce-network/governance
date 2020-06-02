@@ -12,10 +12,12 @@ export function setupContracts(dispatch) {
   const { web3, network } = this.props.common;
   const networkName = network == 1 ? 'main' :'rinkeby';
 
-  const tokenID = this.props.match.params.id || config[networkName].Voting;
+  const { contract_address } = this.props.governance.voteDetailData;
 
   dispatch('DFObj', new web3.eth.Contract(DFABI, config[networkName].DF));
-  dispatch('votingObj', new web3.eth.Contract(VotingABI, tokenID));
+  if (contract_address) {
+    dispatch('votingObj', new web3.eth.Contract(VotingABI, contract_address));
+  }
 }
 
 // get balance of usr and usdx

@@ -321,12 +321,13 @@
         span:last-child {
           width: 90px;
           text-align: right;
-          padding-right: 10px;
+          padding-right: 0;
         }
 
         .options__header_polls {
           text-align: right;
           width: 100px;
+          padding-right: 5px;
         }
       }
 
@@ -350,6 +351,49 @@
           width: 90px;
           padding-right: 10px;
           text-align: right;
+          font-size: 10px;
+        }
+
+        .options__item_polls {
+          width: 100px;
+          text-align: right;
+          font-size: 10px;
+        }
+      }
+
+      &__item_selected {
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        background: url('../../assets/selected.svg') no-repeat rgba(255,252,247,1);
+        background-position: right bottom;
+        background-size: 15px 15px;
+        color: #D5A24E;
+        border-radius: 4px;
+        border: 1px solid rgba(245,235,218,1);
+
+        span {
+          color: #D5A24E;
+          font-weight: normal;
+        }
+        span:first-child {
+          width: 380px;
+          color: #D5A24E;
+          font-weight: normal;
+          font-size: 10px;
+          padding-left: 10px;
+        }
+        span:last-child {
+          width: 90px;
+          padding-right: 10px;
+          text-align: right;
+          font-size: 10px;
+        }
+
+        .options__item_polls {
+          width: 100px;
+          text-align: right;
+          font-size: 10px;
         }
       }
     }

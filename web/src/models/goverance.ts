@@ -12,13 +12,20 @@ export default {
     voteRecord: 0,
     isAlive: false,
     btnLoading: false,
+    voteListData: []
   },
   effects: {
     *fetchVoteList({ payload }, { call, put }) {
       const response = yield call(getVoteList, payload);
+      if (response && response.length) {
+        yield put({
+          type: 'updateVoteListData',
+          payload: response,
+        });
+      }
     },
 
-    *fetchVoteDetail({ payload }, { call, put }) {
+    *fetchVoteDetail({ payload, callback }, { call, put }) {
       const response = yield call(getVoteDetail, payload);
 
       if (response && response.contract_address) {
@@ -26,10 +33,18 @@ export default {
           type: 'updateVoteDetailData',
           payload: response,
         });
+
+        callback();
       }
     }
   },
   reducers: {
+    updateVoteListData(state, action) {
+      return {
+        ...state,
+        voteListData: [...action.payload],
+      };
+    },
     updateModalVisible(state, action) {
       return {
         ...state,
@@ -51,7 +66,7 @@ export default {
     updateBtnLoading(state, action) {
       return {
         ...state,
-        btnLoading: !!action.payload
+        btnLoading: !!action.payload,
       };
     },
   }

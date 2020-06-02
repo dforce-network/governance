@@ -1,34 +1,16 @@
 import React from 'react';
-import { initBrowserWallet } from '@utils/web3';
 import { accountHideFormatter } from '@utils';
 import { formatMessage } from 'umi-plugin-locale';
 import styles from './index.less';
+import Link from 'umi/link';
 
 export default class PageHeader extends React.Component {
-  dispatchValue = (name: string, value: string) => {
-    this.props.dispatch({
-      type: 'common/updateParams',
-      payload: {
-        name,
-        value
-      }
-    });
-  }
-
   // connect wallet
   connectWallet = async () => {
     this.props.dispatch({
       type: 'common/updateModalVisible',
       payload: true
     });
-  }
-
-  componentDidMount() {
-    let me = this;
-    initBrowserWallet.bind(me)(me.dispatchValue);
-    setInterval(() => {
-      initBrowserWallet.bind(me)(me.dispatchValue);
-    }, 10000);
   }
 
   render() {
@@ -44,7 +26,7 @@ export default class PageHeader extends React.Component {
 
         <div className={styles.header__menu}>
           <a className={styles.header__menu_item}>Vote</a>
-          <a className={styles.header__menu_item}>Pooling</a>
+          <Link to={'/'}><span className={styles.header__menu_item}>Pooling</span></Link>
           {
             walletAddress ?
               (
