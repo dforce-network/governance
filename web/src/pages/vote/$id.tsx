@@ -41,6 +41,10 @@ export default class VotePage extends React.Component {
     const payload = this.props.match.params.id;
 
     this.props.dispatch({
+      type: 'governance/resetVote',
+    });
+
+    this.props.dispatch({
       type: 'governance/fetchVoteDetail',
       payload,
       callback: () => {

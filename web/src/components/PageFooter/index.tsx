@@ -87,12 +87,12 @@ const PageFooter: React.FC<PageFooterProps> = (props) => {
       <section className={styles.footer__email}>
         <h2>{ formatMessage({ id: 'footer.contact.title' }) }</h2>
         <CopyToClipboard
-          text={'contacts@dforce.network'}
+          text={'support@dforce.network'}
           onCopy={() => {
             message.success(formatMessage({ id: 'footer.copied' }), 4);
           }}
         >
-          <span>contacts@dforce.network</span>
+          <span>support@dforce.network</span>
         </CopyToClipboard>
         <CopyToClipboard
           text={'bd@dforce.network'}

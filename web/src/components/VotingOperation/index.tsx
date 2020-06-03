@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import styles from './index.less';
-import { renderContentFromKey, localTimeFormatter, sumArray, formatVoteNum, formatPercent } from '@utils';
+import { renderContentFromKey, localTimeFormatter, formatVoteNum, formatPercent } from '@utils';
 import { formatMessage } from 'umi-plugin-locale';
 
 export default class VotingOperation extends React.Component {
@@ -22,7 +22,6 @@ export default class VotingOperation extends React.Component {
 
     let optionsArray = this.renderContent('options');
     let { totalVote, voteRecord, voteStatus } = this.props.governance;
-    let sumVotes = sumArray(totalVote);
     let selectedIndex = this.state.selectedIndex;
 
     if (!this.state.userSelected) {
@@ -31,7 +30,7 @@ export default class VotingOperation extends React.Component {
       }
     }
 
-    if (optionsArray.length) {
+    if (optionsArray && optionsArray.length) {
       const optionsObjArray = optionsArray.map((option, key) => {
         let polls = '...';
         let proportion = '...';
@@ -147,11 +146,16 @@ export default class VotingOperation extends React.Component {
 
   // your votes
   renderYourVote = () => {
-    const { voteRecord, voteDetailData } = this.props.governance;
+    const { voteRecord, voteDetailData, dfBalance } = this.props.governance;
     const optionsArray = this.renderContent('options');
 
     if (voteRecord && +voteRecord > 0) {
-      return <i>{ optionsArray[voteRecord - 1] }</i>;
+      let theOptionStr = optionsArray[voteRecord - 1];
+      let theOptionResult = theOptionStr;
+      if (theOptionStr.indexOf(':') > 0) {
+        theOptionResult = theOptionStr.split(':')[0];
+      }
+      return <i>{ theOptionResult }: { formatVoteNum(dfBalance) }</i>;
     }
     return <label>...</label>;
   }
@@ -163,7 +167,6 @@ export default class VotingOperation extends React.Component {
     const win = { name: 'voting.detail.win', value: '...' };
     const polls = { name: 'voting.detail.polls', value: '...' };
     const proportion = { name: 'voting.detail.proportion', value: '...' };
-    const sumVotes = sumArray(totalVote);
 
     if (voteStatus === 'closed') {
       if (totalVote && totalVote.length) {

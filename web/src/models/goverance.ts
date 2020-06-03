@@ -12,7 +12,8 @@ export default {
     voteRecord: 0,
     isAlive: false,
     btnLoading: false,
-    voteListData: []
+    voteListData: [],
+    dfBalance: 0,
   },
   effects: {
     *fetchVoteList({ payload }, { call, put }) {
@@ -34,11 +35,26 @@ export default {
           payload: response,
         });
 
-        callback();
+        callback && callback();
       }
     }
   },
   reducers: {
+    resetVote(state) {
+      return {
+        ...state,
+        voteDetailData: {},
+        startTime: 0,
+        endTime: 0,
+        optionCount: 0,
+        totalVote: [],
+        voteRecord: 0,
+        isAlive: false,
+        btnLoading: false,
+        voteListData: [],
+        dfBalance: 0,
+      };
+    },
     updateVoteListData(state, action) {
       return {
         ...state,

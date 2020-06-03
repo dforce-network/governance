@@ -101,7 +101,9 @@ export function renderContentFromKey(key: string) {
     if (targetObj.hasOwnProperty(key)) {
       return targetObj[key];
     }
+    return null;
   }
+  return null;
 }
 
 export function sumArray(arr) {

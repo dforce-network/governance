@@ -19,7 +19,7 @@ const VotingRules: React.FC<VotingRulesProps> = (props) => {
     }
     let rulesArray = renderContent('remark');
 
-    if (rulesArray.length) {
+    if (rulesArray && rulesArray.length) {
       return rulesArray.map((rule, key) => (
         <li key={key}>{rule }</li>
       ));

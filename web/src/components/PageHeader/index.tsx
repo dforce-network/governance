@@ -25,8 +25,9 @@ export default class PageHeader extends React.Component {
         <img className={styles.header__dropdown} src={require('@assets/icon_menu.svg')} alt="menu" />
 
         <div className={styles.header__menu}>
-          <a className={styles.header__menu_item}>Vote</a>
-          <Link to={'/'}><span className={styles.header__menu_item}>Pooling</span></Link>
+          <a className={styles.header__menu_item}>Assets</a>
+          <a className={styles.header__menu_item}>Trade</a>
+          <Link to={'/'}><span className={styles.header__menu_item}>Governance</span></Link>
           {
             walletAddress ?
               (

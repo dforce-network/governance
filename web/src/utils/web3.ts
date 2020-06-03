@@ -23,7 +23,9 @@ export function setupContracts(dispatch) {
 // get balance of usr and usdx
 export async function getVotingData() {
   // await allowance.bind(this)();
-  const { votingObj, walletAddress } = this.props.common;
+  const { votingObj, DFObj, walletAddress, web3 } = this.props.common;
+  const dfBalance = await DFObj.methods.balanceOf(walletAddress).call();
+  // const dfBalance = toFixed(parseFloat(web3.utils.fromWei(dfBalanceRaw)), 2);
   const startTime = await votingObj.methods.startTime().call();
   const endTime = await votingObj.methods.endTime().call();
   const optionCount = await votingObj.methods.optionCount().call();
@@ -46,6 +48,7 @@ export async function getVotingData() {
     voteStatus = 'closed';
   }
 
+  // console.log(dfBalance)
   // console.log(voteStatus);
   // console.log(totalVote);
   // console.log(voteRecord);
@@ -61,6 +64,7 @@ export async function getVotingData() {
       voteRecord,
       isAlive,
       voteStatus,
+      dfBalance,
     },
   });
 }
