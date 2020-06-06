@@ -25,6 +25,15 @@ export default {
   "voting.options.time": "Start from",
   "voting.options.vote": "VOTE",
   "voting.options.voteClosed": "The vote is closed",
+  "voting.status.closed": 'PASSED',
+  "voting.status.ongoing": 'Voting',
+  "voting.status.fail": 'Fail',
+  "voting.amount": "Amount",
+  "voting.participated": "Percentage of DF participated is",
+
+  "voting.result.winner": "Winner:",
+  "voting.result.expectedWinner": "Expected Winner:",
+  "voting.result.fail": "Fail:",
 
   "voting.detail.details": "Details",
   "voting.detail.yourVotes": "Your Votes",
@@ -35,5 +44,7 @@ export default {
   "voting.detail.proportion": "Proportion",
 
   "voting.rule.title": "Voting mechanism",
-  "common.more": "More..."
+  "common.more": "More...",
+
+  "votelist.voteTime": "Vote on"
 }

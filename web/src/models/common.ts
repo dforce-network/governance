@@ -5,6 +5,8 @@ export default {
     web3: null,
     walletAddress: '',
     walletType: '',
+    DFSupply: 0,
+    dfBalance: 0,
   },
   reducers: {
     updateParams(state, action) {

@@ -16,13 +16,19 @@ export default {
     dfBalance: 0,
   },
   effects: {
-    *fetchVoteList({ payload }, { call, put }) {
+    *fetchVoteList({ payload, callback }, { call, put }) {
       const response = yield call(getVoteList, payload);
       if (response && response.length) {
         yield put({
           type: 'updateVoteListData',
           payload: response,
         });
+
+        if (callback) {
+          response.map(vote => {
+            callback(vote.contract_address);
+          });
+        }
       }
     },
 
@@ -83,6 +89,37 @@ export default {
       return {
         ...state,
         btnLoading: !!action.payload,
+      };
+    },
+    updateDataForTheVote(state, action) {
+      const { constractAddress, startTime, endTime, voteStatus, DFAmount, voteResult, participated } = action.payload;
+      const { voteListData } = state;
+
+      if (voteListData && voteListData.length) {
+        let filterResult = voteListData.filter(vote => vote.contract_address === constractAddress);
+        if (filterResult.length) {
+          filterResult[0].startTime = startTime * 1000;
+          filterResult[0].endTime = endTime * 1000;
+          filterResult[0].voteStatus = voteStatus;
+          filterResult[0].DFAmount = DFAmount;
+          filterResult[0].voteResult = voteResult;
+          filterResult[0].participated = participated;
+        }
+
+        voteListData.sort((a, b) => {
+          if (a.voteStatus === 'ongoing' && b.voteStatus !== 'ongoing') {
+            return -1;
+          } else if (a.voteStatus !== 'ongoing' && b.voteStatus === 'ongoing') {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+      }
+
+      return {
+        ...state,
+        voteListData: [...voteListData],
       };
     },
   }

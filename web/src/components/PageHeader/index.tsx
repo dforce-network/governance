@@ -41,7 +41,7 @@ export default class PageHeader extends React.Component {
                   target="_blank"
                 >
                   <div>
-                    <i style={{ backgroundColor: this.props.common.network == 1 ? '#29B6AF' : '#e2bc73' }}></i>
+                    <img src={require('@assets/metamask.svg')} />
                     { accountHideFormatter(walletAddress) }
                   </div>
                 </a>

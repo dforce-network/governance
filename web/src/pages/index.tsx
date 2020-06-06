@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import styles from './index.less';
 import PageHeader from '@components/PageHeader';
 import VotingList from '@components/VotingList';
+import { initBrowserWallet, fetchDataOfTheContract } from '@utils/web3';
 
 @connect(({ governance, common, loading }) => ({
   common,
@@ -10,9 +11,19 @@ import VotingList from '@components/VotingList';
   loading: loading.models.governance
 }))
 export default class IndexPage extends React.Component {
+  initWaleltData = () => {
+    initBrowserWallet.bind(this)(false);
+  }
+
   componentDidMount() {
+    const me = this;
+    this.initWaleltData();
+
     this.props.dispatch({
-      type: 'governance/fetchVoteList'
+      type: 'governance/fetchVoteList',
+      callback: (c) => {
+        fetchDataOfTheContract.bind(me)(c);
+      }
     });
     document.getElementById('page__loader').style.display = 'none';
   }

@@ -14,24 +14,14 @@ import { initBrowserWallet } from '@utils/web3';
   loading: loading.models.governance
 }))
 export default class VotePage extends React.Component {
-  dispatchValue = (name: string, value) => {
-    this.props.dispatch({
-      type: 'common/updateParams',
-      payload: {
-        name,
-        value
-      }
-    });
-  }
-
   initWallet = () => {
     let me = this;
-    initBrowserWallet.bind(me)(me.dispatchValue);
+    initBrowserWallet.bind(me)();
     setInterval(() => {
       const hrefArray = window.location.href.split('/');
       if (hrefArray && hrefArray.length) {
         if (hrefArray[hrefArray.length - 1] === me.props.governance.voteDetailData._id) {
-          initBrowserWallet.bind(me)(me.dispatchValue);
+          initBrowserWallet.bind(me)();
         }
       }
     }, 10000);

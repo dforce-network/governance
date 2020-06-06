@@ -139,14 +139,15 @@ export default class VotingOperation extends React.Component {
         onClick={this.handleVote}
         loading={this.props.governance.btnLoading}
       >
-        { formatMessage({ id: voteStatus === 'closed' ? 'voting.options.voteClosed' : 'voting.options.vote' }) }
+        { formatMessage({ id: ['closed', 'fail'].indexOf(voteStatus) >= 0  ? 'voting.options.voteClosed' : 'voting.options.vote' }) }
       </Button>
     );
   }
 
   // your votes
   renderYourVote = () => {
-    const { voteRecord, voteDetailData, dfBalance } = this.props.governance;
+    const { dfBalance } = this.props.common;
+    const { voteRecord, voteDetailData } = this.props.governance;
     const optionsArray = this.renderContent('options');
 
     if (voteRecord && +voteRecord > 0) {
@@ -168,7 +169,7 @@ export default class VotingOperation extends React.Component {
     const polls = { name: 'voting.detail.polls', value: '...' };
     const proportion = { name: 'voting.detail.proportion', value: '...' };
 
-    if (voteStatus === 'closed') {
+    if (['closed', 'fail'].indexOf(voteStatus) >= 0) {
       if (totalVote && totalVote.length) {
         let copyArray = [...totalVote];
         copyArray.sort();
