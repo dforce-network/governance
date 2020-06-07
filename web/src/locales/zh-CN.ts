@@ -25,7 +25,7 @@ export default {
   "voting.options.vote": "投票",
   "voting.options.voteClosed": "投票已结束",
   "voting.status.closed": '通过',
-  "voting.status.ongoing": '投票中',
+  "voting.status.ongoing": '投票进行中',
   "voting.status.fail": '失败',
   "voting.amount": "总量",
   "voting.participated": "参与投票的百分比",
@@ -45,5 +45,10 @@ export default {
   "voting.rule.title": "投票规则",
   "common.more": "了解详情",
 
-  "votelist.voteTime": "投票时间："
+  "votelist.voteTime": "投票时间：",
+
+  "voting.action.failure": "失败",
+  "voting.action.success": "成功",
+  "voting.action.voting": "投票中",
+  "voting.view": "查看",
 }

@@ -211,6 +211,9 @@ export async function initBrowserWallet(setContracts = true) {
 
     if (window.ethereum.on) {
       window.ethereum.on('accountsChanged', (accounts) => {
+        this.props.dispatch({
+          type: 'governance/resetVoteDataFromContract',
+        });
         initBrowserWallet.bind(this)();
       });
     }

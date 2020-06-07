@@ -58,7 +58,20 @@ export default {
         isAlive: false,
         btnLoading: false,
         voteListData: [],
-        dfBalance: 0,
+        voteStatus: '',
+      };
+    },
+    resetVoteDataFromContract(state) {
+      return {
+        ...state,
+        startTime: 0,
+        endTime: 0,
+        optionCount: 0,
+        totalVote: [],
+        voteRecord: 0,
+        isAlive: false,
+        btnLoading: false,
+        voteStatus: '',
       };
     },
     updateVoteListData(state, action) {

@@ -1,0 +1,66 @@
+.action {
+  width: 202px;
+  height: 58px;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  border-left: solid #D5A24E 5px;
+  position: absolute;
+  bottom: -72px;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+
+  &__status {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 24px;
+      margin-right: 6px;
+    }
+    span {
+      font-size: 16px;
+      color: #434976;
+      font-weight: 500;
+    }
+
+    &_voting {
+      animation: icon-loading 2s linear infinite;
+    }
+  }
+
+  &__view {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 12px;
+    }
+    span {
+      font-size: 16px;
+      color: #D5A24E;
+      font-weight: 500;
+      margin-right: 6px;
+    }
+  }
+}
+
+@-webkit-keyframes icon-loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes icon-loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

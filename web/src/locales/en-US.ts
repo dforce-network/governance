@@ -46,5 +46,10 @@ export default {
   "voting.rule.title": "Voting mechanism",
   "common.more": "More...",
 
-  "votelist.voteTime": "Vote on"
+  "votelist.voteTime": "Vote on",
+
+  "voting.action.failure": "Failure",
+  "voting.action.success": "Success",
+  "voting.action.voting": "Voting",
+  "voting.view": "VIEW",
 }

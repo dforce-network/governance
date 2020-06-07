@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import styles from './index.less';
 import { renderContentFromKey, localTimeFormatter, formatVoteNum, formatPercent } from '@utils';
 import { formatMessage } from 'umi-plugin-locale';
 
 export default class VotingOperation extends React.Component {
   state = {
-    selectedIndex: -1,
+    selectedIndex: 0,
     userSelected: false,
   }
 
@@ -78,29 +78,78 @@ export default class VotingOperation extends React.Component {
   }
 
   // vote
-  handleVote = () => {
+  handleVote = async () => {
     const { selectedIndex } = this.state;
     const { votingObj, walletAddress } = this.props.common;
+    const { dispatch } = this.props;
 
     if (!this.props.governance.isAlive) {
       return;
     }
 
     if (selectedIndex >= 0 && votingObj) {
-      this.props.dispatch({
+      dispatch({
         type: 'governance/updateBtnLoading',
         payload: true,
       });
 
-      votingObj.methods
-        .vote(selectedIndex + 1)
-        .send({
-          from: walletAddress,
-          gas: 1000000
+      // const voteResult = await
+      // save localStorage
+      /*
+        name: wallet__network
+        value: [{ tx: transaction_id, status: 'pending' }]
+      */
+      const voteResult = await votingObj.methods.vote(selectedIndex + 1).send(
+        { from: walletAddress, gas: 1000000 },
+        (resFail, resSuccess) => {
+          // enable the vote button
+          dispatch({
+            type: 'governance/updateBtnLoading',
+            payload: false
+          });
+
+          // show the action panel if res success
+          if (resSuccess) {
+            dispatch({
+              type: 'common/updateTransAction',
+              payload: {
+                actionStatus: 'pending',
+                actionVisible: true,
+                actionTransactionHash: resSuccess,
+              },
+            });
+          }
+
+          if(resFail && resFail.message) {
+            message.error(resFail.message);
+          }
+        }
+      );
+
+      // vote success
+      if (voteResult && voteResult.status && voteResult.transactionHash) {
+        dispatch({
+          type: 'common/updateTransAction',
+          payload: {
+            actionStatus: 'success',
+            actionVisible: true,
+            actionTransactionHash: voteResult.transactionHash,
+          },
         });
 
+        // hide after 3000ms
+        setTimeout(() => {
+          dispatch({
+            type: 'common/updateTransAction',
+            payload: {
+              actionVisible: false,
+            }
+          });
+        }, 3000);
+      }
+
       setTimeout(() => {
-        this.props.dispatch({
+        dispatch({
           type: 'governance/updateBtnLoading',
           payload: false,
         });
@@ -135,9 +184,8 @@ export default class VotingOperation extends React.Component {
     return (
       <Button
         type="primary"
-        disabled={ this.state.selectedIndex < 0 || voteStatus !== 'ongoing' }
+        disabled={ this.state.selectedIndex < 0 || voteStatus !== 'ongoing' || this.props.governance.btnLoading }
         onClick={this.handleVote}
-        loading={this.props.governance.btnLoading}
       >
         { formatMessage({ id: ['closed', 'fail'].indexOf(voteStatus) >= 0  ? 'voting.options.voteClosed' : 'voting.options.vote' }) }
       </Button>
@@ -150,13 +198,19 @@ export default class VotingOperation extends React.Component {
     const { voteRecord, voteDetailData } = this.props.governance;
     const optionsArray = this.renderContent('options');
 
-    if (voteRecord && +voteRecord > 0) {
-      let theOptionStr = optionsArray[voteRecord - 1];
-      let theOptionResult = theOptionStr;
-      if (theOptionStr.indexOf(':') > 0) {
-        theOptionResult = theOptionStr.split(':')[0];
+    if (optionsArray && optionsArray!== '...' && optionsArray.length) {
+      if (voteRecord && +voteRecord > 0) {
+        let theOptionStr = '';
+        if (voteRecord - 1 < optionsArray.length) {
+          theOptionStr = optionsArray[voteRecord - 1];
+        }
+
+        let theOptionResult = theOptionStr;
+        if (theOptionStr.indexOf(':') > 0) {
+          theOptionResult = theOptionStr.split(':')[0];
+        }
+        return <i>{ theOptionResult }: { formatVoteNum(dfBalance) }</i>;
       }
-      return <i>{ theOptionResult }: { formatVoteNum(dfBalance) }</i>;
     }
     return <label>...</label>;
   }
@@ -184,6 +238,10 @@ export default class VotingOperation extends React.Component {
       }
     }
 
+    if (['fail', 'ongoing'].indexOf(voteStatus) >= 0 ) {
+      return;
+    }
+
     return [win, polls, proportion].map(item => (
       <div className={styles.detail__item} key={item.name}>
         <span>{ formatMessage({ id: item.name }) }</span>
@@ -193,6 +251,8 @@ export default class VotingOperation extends React.Component {
   }
 
   render() {
+    const { voteStatus } = this.props.governance;
+
     return (
       <div className={styles.operation}>
         <section className={styles.vote}>
@@ -224,13 +284,26 @@ export default class VotingOperation extends React.Component {
             </div>
           </div>
 
-          <h2 className={styles.detail__title}>{ formatMessage({ id: 'voting.detail.results' }) }</h2>
+          <div className={styles.detail__result}>
+            <h2 className={styles.detail__title}>{ formatMessage({ id: 'voting.detail.results' }) }</h2>
 
-          <div className={styles.detail__item}>
-            <span>{ formatMessage({ id: 'voting.detail.endTime' }) }</span>
-            <label>{ this.renderVotingEndTime() }</label>
+            <div className={styles.detail__item}>
+              <span>{ formatMessage({ id: 'voting.detail.endTime' }) }</span>
+              <label>{ this.renderVotingEndTime() }</label>
+            </div>
+            { this.renderVoteResult() }
+
+            { voteStatus === 'closed' ? <img className={styles.detail__result_status} src={require('@assets/icon_closed.svg')} /> : null }
+            { voteStatus === 'fail' ? <img className={styles.detail__result_status} src={require('@assets/icon_fail.svg')} /> : null }
+            {
+              voteStatus === 'ongoing'
+              ? <div className={styles.detail__result_ongoing}>
+                  <img src={require('@assets/icon_ongoing.svg')} />
+                  <span>{ formatMessage({ id: 'voting.status.ongoing' }) }</span>
+                </div>
+              : null
+            }
           </div>
-          { this.renderVoteResult() }
         </section>
       </div>
     );

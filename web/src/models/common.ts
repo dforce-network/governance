@@ -7,6 +7,9 @@ export default {
     walletType: '',
     DFSupply: 0,
     dfBalance: 0,
+    actionStatus: 'pending',  // pending, failure, success
+    actionVisible: false,
+    actionTransactionHash: '',
   },
   reducers: {
     updateParams(state, action) {
@@ -19,6 +22,14 @@ export default {
       return {
         ...state,
         ...action.payload,
+      };
+    },
+    updateTransAction(state, action) {
+      return {
+        ...state,
+        actionStatus: action.payload.actionStatus,
+        actionVisible: action.payload.actionVisible,
+        actionTransactionHash: action.payload.actionTransactionHash,
       };
     },
   }
