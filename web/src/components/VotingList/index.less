@@ -10,9 +10,8 @@
     padding: 22px 23px;
     margin-bottom: 20px;
 
-    div {
+    &_header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
 
       h1 {
@@ -44,6 +43,7 @@
       text-align: center;
       line-height: 30px;
       font-weight: 500;
+      cursor: pointer;
     }
 
     &_fail {
@@ -56,6 +56,7 @@
       text-align: center;
       line-height: 30px;
       font-weight: 500;
+      cursor: pointer;
     }
 
     &_time, &_result {
@@ -68,6 +69,9 @@
         width: 14px;
         margin-right: 8px;
       }
+      p {
+        margin: 0;
+      }
     }
     &_time {
       margin: 33px 0 12px;
@@ -76,7 +80,7 @@
     &_result {
       b {
         color: #070237;
-        padding: 0 5px;
+        padding: 0 0 0 5px;
       }
     }
     &_remark {
@@ -107,7 +111,7 @@
       padding: 18px 15px;
       margin-bottom: 12px;
 
-      div {
+      &_header {
         h1 {
           font-size: 16px;
         }
@@ -125,13 +129,13 @@
 
       &_time, &_result {
         font-size: 11px;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
         color: #7A7889;
 
         img {
           margin-right: 4px;
+          margin-top: 2px;
         }
       }
 
@@ -163,6 +167,7 @@
         .voting__item_passed, .voting__item_fail {
           width: 192px;
           height: 35px;
+          line-height: 35px;
         }
       }
     }

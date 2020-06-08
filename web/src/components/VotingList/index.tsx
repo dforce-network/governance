@@ -45,29 +45,31 @@ const VotingList: React.FC<VotingListProps> = (props) => {
 
     if (vote.voteStatus === 'closed') {
       voteResultDOM = (
-        <span className={styles.voting__item_remark}>
+        <div className={styles.voting__item_remark}>
           { formatMessage({ id: 'voting.result.winner' }) } { voteOptionResultStr } <b>{ voteResultPercent }</b>
-        </span>
+        </div>
       );
     }
 
     if (vote.voteStatus === 'ongoing') {
       voteResultDOM = (
-        <span className={styles.voting__item_remark}>
+        <div className={styles.voting__item_remark}>
           { formatMessage({ id: 'voting.result.expectedWinner' }) } { voteOptionResultStr }
-        </span>
+        </div>
       );
     }
 
     return (
       <section>
-        <span className={styles.voting__item_time}>
+        <div className={styles.voting__item_time}>
           <img src={require('@assets/icon_time.svg')} />
-          { formatMessage({id: 'votelist.voteTime'}) } { formatVoteTime(vote.startTime) } - { formatVoteTime(vote.endTime) }
-        </span>
-        <span className={styles.voting__item_result}>
-          <img src={require('@assets/icon_result.svg')} />{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <b>{ vote.participated }</b>,{ formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
-        </span>
+          <p>{ formatMessage({id: 'votelist.voteTime'}) } { formatVoteTime(vote.startTime) } - { formatVoteTime(vote.endTime) }</p>
+        </div>
+        <div className={styles.voting__item_result}>
+          <img src={require('@assets/icon_result.svg')} />
+          <p>{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <b>{ vote.participated }</b>, { formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
+          </p>
+        </div>
         { voteResultDOM }
       </section>
     );
@@ -78,21 +80,42 @@ const VotingList: React.FC<VotingListProps> = (props) => {
     if (v.voteStatus) {
       const { voteStatus } = v;
 
-      if (voteStatus === 'ongoing') {
+      if (voteStatus === 'ongoing' || voteStatus === 'notStart') {
         return (
-          <Button type="primary">
+          <Button
+            type="primary"
+            onClick={() => {
+              if (v.voteStatus && v.voteStatus === 'ongoing') {
+                router.push(`/vote/${v._id}`);
+              }
+            }}
+          >
             { formatMessage({id: 'voting.options.vote'}) }
           </Button>
         );
       } else if (voteStatus === 'closed') {
         return (
-          <span className={styles.voting__item_passed}>{ formatMessage({ id: 'voting.status.closed' }) }</span>
+          <span
+            onClick={() => {
+              router.push(`/vote/${v._id}`);
+            }}
+            className={styles.voting__item_passed}
+          >
+            { formatMessage({ id: 'voting.status.closed' }) }
+          </span>
         );
       } else if (voteStatus === 'fail') {
         return (
-          <span className={styles.voting__item_fail}>{ formatMessage({ id: 'voting.status.fail' }) }</span>
+          <span
+            onClick={() => {
+              router.push(`/vote/${v._id}`);
+            }}
+            className={styles.voting__item_fail}
+          >
+            { formatMessage({ id: 'voting.status.fail' }) }
+          </span>
         );
-      } else if (voteStatus === 'notStart') {
+      } else {
         return null;
       }
     }
@@ -109,11 +132,8 @@ const VotingList: React.FC<VotingListProps> = (props) => {
           <div
             className={styles.voting__item}
             key={vote._id}
-            onClick={() => {
-              router.push(`/vote/${vote._id}`)
-            }}
           >
-            <div>
+            <div className={styles.voting__item_header}>
               <h1>{ renderVoteItemFromKey(vote, 'vote_title') }</h1>
               { renderVoteStatusForBtn(vote) }
             </div>

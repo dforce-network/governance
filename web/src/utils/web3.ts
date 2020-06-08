@@ -120,21 +120,23 @@ export async function allowance() {
 // voteResult: 投票结果
 // participated: 参与投票百分比
 export async function fetchDataOfTheContract(constractAddress: string) {
-  const { web3, network, walletAddress, DFObj, DFSupply } = this.props.common;
+  const { web3, network, walletAddress, DFObj } = this.props.common;
   const networkName = network == 1 ? 'main' :'rinkeby';
 
   if (constractAddress) {
     const votingObj = new web3.eth.Contract(VotingABI, constractAddress);
+    const DFObj = new web3.eth.Contract(DFABI, config[networkName].DF)
     const startTime = await votingObj.methods.startTime().call();
     const endTime = await votingObj.methods.endTime().call();
     const totalVote = await votingObj.methods.getTotalVote().call();
     const isAlive = await votingObj.methods.isAlive().call();
     const threshold = await votingObj.methods.threshold().call();
+    const dfSupply = await DFObj.methods.totalSupply().call();
     const sumVote = sumArray(totalVote);
 
     // console.log(threshold, sumVote)
 
-    let percentValue = sumVote / 1e18 / DFSupply;
+    let percentValue = sumVote / dfSupply;
     let participated = '0%';
 
     if (percentValue) {
@@ -175,7 +177,7 @@ export async function fetchDataOfTheContract(constractAddress: string) {
         startTime,
         endTime,
         voteStatus,
-        DFAmount: DFSupply,
+        DFAmount: dfSupply / 1e18,
         voteResult: totalVote,
         participated,
       },
@@ -214,7 +216,13 @@ export async function initBrowserWallet(setContracts = true) {
         this.props.dispatch({
           type: 'governance/resetVoteDataFromContract',
         });
-        initBrowserWallet.bind(this)();
+
+        // set contract if in vote page, not in vote list page
+        try {
+          initBrowserWallet.bind(this)(!!this.props.match.params.id);
+        } catch (err) {
+          console.log(err);
+        }
       });
     }
   } else if (window.web3) {
