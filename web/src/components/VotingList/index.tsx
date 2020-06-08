@@ -66,11 +66,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
           { formatMessage({id: 'votelist.voteTime'}) } { formatVoteTime(vote.startTime) } - { formatVoteTime(vote.endTime) }
         </span>
         <span className={styles.voting__item_result}>
-          <img src={require('@assets/icon_result.svg')} />
-          { vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }
-          : % { formatMessage({ id: 'voting.participated' }) } <b>{ vote.participated }</b>,
-          { formatMessage({ id: 'voting.amount' }) }
-          : <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
+          <img src={require('@assets/icon_result.svg')} />{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <b>{ vote.participated }</b>,{ formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
         </span>
         { voteResultDOM }
       </section>
@@ -125,6 +121,10 @@ const VotingList: React.FC<VotingListProps> = (props) => {
             <p>{ renderVoteItemFromKey(vote, 'Description') }</p>
 
             { renderVoteStatus(vote) }
+
+            <div className={styles.voting__item_h5}>
+              { renderVoteStatusForBtn(vote) }
+            </div>
           </div>
         )
       })

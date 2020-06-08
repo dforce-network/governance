@@ -89,5 +89,82 @@
         padding: 0 5px;
       }
     }
+
+    .voting__item_h5 {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .voting {
+    width: 96%;
+    margin: 30px auto;
+    min-height: 400px;
+    position: relative;
+
+    &__item {
+      padding: 18px 15px;
+      margin-bottom: 12px;
+
+      div {
+        h1 {
+          font-size: 16px;
+        }
+        button {
+          display: none;
+        }
+        span {
+          display: none;
+        }
+      }
+
+      p {
+        font-size: 12px;
+      }
+
+      &_time, &_result {
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        color: #7A7889;
+
+        img {
+          margin-right: 4px;
+        }
+      }
+
+      &_time {
+        margin: 20px 0 8px;
+      }
+
+      &_remark {
+        font-size: 11px;
+        color: #7A7889;
+        padding-left: 18px;
+      }
+
+      .voting__item_h5 {
+        display: flex;
+        height: 35px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 25px;
+
+        button {
+          display: block;
+          width: 192px;
+          height: 35px;
+        }
+        span {
+          display: block;
+        }
+        .voting__item_passed, .voting__item_fail {
+          width: 192px;
+          height: 35px;
+        }
+      }
+    }
   }
 }

@@ -45,7 +45,7 @@ export default {
   "voting.rule.title": "投票规则",
   "common.more": "了解详情",
 
-  "votelist.voteTime": "投票时间：",
+  "votelist.voteTime": "时间：",
 
   "voting.action.failure": "失败",
   "voting.action.success": "成功",

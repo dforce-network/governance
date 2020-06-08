@@ -16,7 +16,7 @@ export function localTimeFormatter(time: string) {
 
   let timeobj = moment(time);
   let timePrefix = timeobj.format('LL');
-  let timeEnd = timeobj.format('HH:mm:ss');
+  let timeEnd = timeobj.format('HH:mm');
   return `${timePrefix} ${isEn ? 'at' : ''} ${timeEnd}`;
 }
 
