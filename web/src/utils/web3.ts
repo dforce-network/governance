@@ -136,7 +136,7 @@ export async function fetchDataOfTheContract(constractAddress: string) {
     const sumVote = sumArray(totalVote);
 
     // console.log(threshold, sumVote)
-    console.log(threshold)
+    // console.log(threshold)
 
     let percentValue = sumVote / dfSupply;
     let participated = '0%';
