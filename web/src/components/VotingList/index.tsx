@@ -67,7 +67,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
         </div>
         <div className={styles.voting__item_result}>
           <img src={require('@assets/icon_result.svg')} />
-          <p>{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <span>({ formatMessage({ id: 'voting.quorum' }) } { formatMessage({ id: 'voting.quorum.is' }) } <b>{ vote.quorum }</b>)</span> { formatMessage({ id: 'voting.quorum.is' })} <b>{ vote.participated }</b>, { formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
+          <p>{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <span>({ formatMessage({ id: 'voting.quorum' }) } { formatMessage({ id: 'voting.quorum.is' }) } <b>{ vote.quorum }</b>)</span> { formatMessage({ id: 'voting.quorum.is' })} <b>{ vote.participated }</b>, { formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.sumVote) }</b> DF
           </p>
         </div>
         { voteResultDOM }

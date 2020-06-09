@@ -20,9 +20,10 @@ export default {
       const response = yield call(getVoteList, payload);
       if (response && response.length) {
         response.map(vote => {
-          vote.participated = '...'
-          vote.DFAmount = '...'
-          vote.quorum = '...'
+          vote.participated = '...';
+          vote.DFAmount = '...';
+          vote.quorum = '...';
+          vote.sumVote = '...';
         })
 
         yield put({
@@ -111,7 +112,7 @@ export default {
       };
     },
     updateDataForTheVote(state, action) {
-      const { constractAddress, startTime, endTime, voteStatus, DFAmount, voteResult, participated, quorum } = action.payload;
+      const { constractAddress, startTime, endTime, voteStatus, DFAmount, voteResult, participated, quorum, sumVote } = action.payload;
       const { voteListData } = state;
 
       if (voteListData && voteListData.length) {
@@ -124,6 +125,7 @@ export default {
           filterResult[0].voteResult = voteResult;
           filterResult[0].participated = participated;
           filterResult[0].quorum = quorum;
+          filterResult[0].sumVote = sumVote;
         }
 
         voteListData.sort((a, b) => {

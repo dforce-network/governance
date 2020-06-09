@@ -191,6 +191,7 @@ export async function fetchDataOfTheContract(constractAddress: string) {
         voteResult: totalVote,
         participated,
         quorum,
+        sumVote: sumVote / 1e18,
       },
     });
   }
