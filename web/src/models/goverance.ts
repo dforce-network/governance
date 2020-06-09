@@ -19,6 +19,12 @@ export default {
     *fetchVoteList({ payload, callback }, { call, put }) {
       const response = yield call(getVoteList, payload);
       if (response && response.length) {
+        response.map(vote => {
+          vote.participated = '...'
+          vote.DFAmount = '...'
+          vote.quorum = '...'
+        })
+
         yield put({
           type: 'updateVoteListData',
           payload: response,
@@ -105,7 +111,7 @@ export default {
       };
     },
     updateDataForTheVote(state, action) {
-      const { constractAddress, startTime, endTime, voteStatus, DFAmount, voteResult, participated } = action.payload;
+      const { constractAddress, startTime, endTime, voteStatus, DFAmount, voteResult, participated, quorum } = action.payload;
       const { voteListData } = state;
 
       if (voteListData && voteListData.length) {
@@ -117,6 +123,7 @@ export default {
           filterResult[0].DFAmount = DFAmount;
           filterResult[0].voteResult = voteResult;
           filterResult[0].participated = participated;
+          filterResult[0].quorum = quorum;
         }
 
         voteListData.sort((a, b) => {

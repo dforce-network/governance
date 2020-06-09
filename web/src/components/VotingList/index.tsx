@@ -54,7 +54,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
     if (vote.voteStatus === 'ongoing') {
       voteResultDOM = (
         <div className={styles.voting__item_remark}>
-          { formatMessage({ id: 'voting.result.expectedWinner' }) } { voteOptionResultStr }
+          { formatMessage({ id: 'voting.result.expectedWinner' }) } { voteOptionResultStr }, <b>{ voteResultPercent }</b>
         </div>
       );
     }
@@ -67,7 +67,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
         </div>
         <div className={styles.voting__item_result}>
           <img src={require('@assets/icon_result.svg')} />
-          <p>{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <b>{ vote.participated }</b>, { formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
+          <p>{ vote.voteStatus ? formatMessage({ id: `voting.status.${vote.voteStatus}` }) : '...' }: % { formatMessage({ id: 'voting.participated' }) } <span>({ formatMessage({ id: 'voting.quorum' }) } { formatMessage({ id: 'voting.quorum.is' }) } <b>{ vote.quorum }</b>)</span> { formatMessage({ id: 'voting.quorum.is' })} <b>{ vote.participated }</b>, { formatMessage({ id: 'voting.amount' }) }: <b>{ formatCurrencyNumber(vote.DFAmount) }</b> DF
           </p>
         </div>
         { voteResultDOM }
@@ -138,7 +138,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
               { renderVoteStatusForBtn(vote) }
             </div>
 
-            <p>{ renderVoteItemFromKey(vote, 'Description') }</p>
+            <p className={styles.voting__item_content}>{ renderVoteItemFromKey(vote, 'Description') }</p>
 
             { renderVoteStatus(vote) }
 

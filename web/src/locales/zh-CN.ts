@@ -3,7 +3,7 @@ export default {
   "menu.pooling": "Pooling",
   "menu.connectWallet": "链接钱包",
 
-  "footer.resource.title": "开发者",
+  "footer.resource.title": "资源",
   "footer.resource.github": "GitHub",
   "footer.resource.faq": "FAQ",
 
@@ -29,6 +29,8 @@ export default {
   "voting.status.fail": '失败',
   "voting.amount": "总量",
   "voting.participated": "参与投票的百分比",
+  "voting.quorum": "法定比例",
+  "voting.quorum.is": " ",
 
   "voting.result.winner": "胜出:",
   "voting.result.expectedWinner": "预期胜出:",

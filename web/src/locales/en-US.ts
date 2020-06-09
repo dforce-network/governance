@@ -29,7 +29,9 @@ export default {
   "voting.status.ongoing": 'Voting',
   "voting.status.fail": 'Fail',
   "voting.amount": "Amount",
-  "voting.participated": "Percentage of DF participated is",
+  "voting.participated": "Percentage of DF participated",
+  "voting.quorum": "Quorum",
+  "voting.quorum.is": "is",
 
   "voting.result.winner": "Winner:",
   "voting.result.expectedWinner": "Expected Winner:",

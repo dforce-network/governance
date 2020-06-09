@@ -131,13 +131,23 @@ export async function fetchDataOfTheContract(constractAddress: string) {
     const totalVote = await votingObj.methods.getTotalVote().call();
     const isAlive = await votingObj.methods.isAlive().call();
     const threshold = await votingObj.methods.threshold().call();
+    // const majorityPermillage = await votingObj.methods.majorityPermillage().call();
     const dfSupply = await DFObj.methods.totalSupply().call();
     const sumVote = sumArray(totalVote);
 
     // console.log(threshold, sumVote)
+    console.log(threshold)
 
     let percentValue = sumVote / dfSupply;
     let participated = '0%';
+    let quorumValue = threshold / dfSupply;
+    let quorum = '0%';
+
+    if (threshold > 0) {
+      if (quorumValue) {
+        quorum = (quorumValue * 100).toFixed(2) + '%';
+      }
+    }
 
     if (percentValue) {
       participated = (percentValue * 100).toFixed(2) + '%';
@@ -180,6 +190,7 @@ export async function fetchDataOfTheContract(constractAddress: string) {
         DFAmount: dfSupply / 1e18,
         voteResult: totalVote,
         participated,
+        quorum,
       },
     });
   }
