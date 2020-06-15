@@ -30,8 +30,8 @@ const PageFooter: React.FC<PageFooterProps> = (props) => {
     <div className={styles.footer}>
       <section className={styles.footer__link}>
         <h2>{ formatMessage({ id: 'footer.resource.title' }) }</h2>
-        <a href="https://github.com/dforce-network/USR" target="_blank">{ formatMessage({ id: 'footer.resource.github' }) }</a>
-        <a href="https://github.com/dforce-network/USR" target="_blank">{ formatMessage({ id: 'footer.resource.faq' }) }</a>
+        <a href="https://github.com/dforce-network/governance" target="_blank">{ formatMessage({ id: 'footer.resource.github' }) }</a>
+        <a href="https://github.com/dforce-network/governance" target="_blank">{ formatMessage({ id: 'footer.resource.faq' }) }</a>
       </section>
 
       <section className={styles.footer__community}>

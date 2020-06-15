@@ -47,6 +47,8 @@ export default {
 
   "voting.rule.title": "Voting mechanism",
   "common.more": "More...",
+  "common.dfBalance": "DF Balance",
+  "common.failure": "Not meet the requirement of Quorum",
 
   "votelist.voteTime": "Vote on",
 
@@ -54,4 +56,11 @@ export default {
   "voting.action.success": "Success",
   "voting.action.voting": "Voting",
   "voting.view": "VIEW",
+
+  "menu.assets": "Assets",
+  "menu.assetsInfo": "An indexed stablecoin",
+  "menu.trade": "Trade",
+  "menu.tradeInfo": "stable assets swap",
+  "menu.governance": "Governance",
+  "menu.governanceInfo": "DF token distribution",
 }

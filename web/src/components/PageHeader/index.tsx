@@ -51,14 +51,14 @@ export default class PageHeader extends React.Component {
                 <Menu.Item>
                   <a target="_blank" rel="noopener noreferrer" href="https://usdx.dforce.network/" className={styles.header__overlay_item}>
                     <span>USDx</span>
-                    <label>An indexed stablecoin</label>
+                    <label>{ formatMessage({ id: 'menu.assetsInfo'}) }</label>
                   </a>
                 </Menu.Item>
               </Menu>
             }
           >
             <span className={styles.header__menu_item}>
-              <label>Assets</label>
+              <label>{ formatMessage({ id: 'menu.assets'}) }</label>
               <img src={downSvg} alt="down" />
             </span>
           </Dropdown>
@@ -69,14 +69,14 @@ export default class PageHeader extends React.Component {
                 <Menu.Item>
                   <a target="_blank" rel="noopener noreferrer" href="https://trade.dforce.network/" className={styles.header__overlay_item}>
                     <span>dForce Trade</span>
-                    <label>stable assets swap</label>
+                    <label>{ formatMessage({ id: 'menu.tradeInfo'}) }</label>
                   </a>
                 </Menu.Item>
               </Menu>
             }
           >
             <span className={styles.header__menu_item}>
-              <label>Trade</label>
+              <label>{ formatMessage({ id: 'menu.trade'}) }</label>
               <img src={downSvg} alt="down" />
             </span>
           </Dropdown>
@@ -87,14 +87,14 @@ export default class PageHeader extends React.Component {
                 <Menu.Item>
                   <a target="_blank" rel="noopener noreferrer" href="https://airdrop.dforce.network/" className={styles.header__overlay_item}>
                     <span>Airdrop</span>
-                    <label>DF token distribution</label>
+                    <label>{ formatMessage({ id: 'menu.governanceInfo'}) }</label>
                   </a>
                 </Menu.Item>
               </Menu>
             }
           >
             <span className={styles.header__menu_item}>
-              <label>Governance</label>
+              <label>{ formatMessage({ id: 'menu.governance'}) }</label>
               <img src={downSvg} alt="down" />
             </span>
           </Dropdown>
@@ -140,22 +140,22 @@ export default class PageHeader extends React.Component {
             defaultActiveKey={['1', '2', '3']}
             expandIconPosition='right'
           >
-            <Panel header='Assets' key="1">
+            <Panel header={ formatMessage({ id: 'menu.assets'}) } key="1">
               <a target="_blank" rel="noopener noreferrer" href="https://usdx.dforce.network" className={styles.header__overlay_item}>
                 <span>USDx</span>
-                <label>An indexed stablecoin</label>
+                <label>{ formatMessage({ id: 'menu.assetsInfo'}) }</label>
               </a>
             </Panel>
-            <Panel header='Trade' key="2">
+            <Panel header={ formatMessage({ id: 'menu.trade'}) } key="2">
               <a target="_blank" rel="noopener noreferrer" href="https://trade.dforce.network/" className={styles.header__overlay_item}>
                 <span>dForce Trade</span>
-                <label>stable assets swap</label>
+                <label>{ formatMessage({ id: 'menu.tradeInfo'}) }</label>
               </a>
             </Panel>
-            <Panel header='Governance' key="3">
+            <Panel header={ formatMessage({ id: 'menu.governance'}) } key="3">
               <a target="_blank" href="https://airdrop.dforce.network/" className={styles.header__overlay_item}>
                 <span>Airdrop</span>
-                <label>DF token distribution</label>
+                <label>{ formatMessage({ id: 'menu.governanceInfo'}) }</label>
               </a>
             </Panel>
           </Collapse>

@@ -6,7 +6,7 @@ import { formatMessage } from 'umi-plugin-locale';
 
 export default class VotingOperation extends React.Component {
   state = {
-    selectedIndex: 0,
+    selectedIndex: -1,
     userSelected: false,
   }
 
@@ -252,6 +252,7 @@ export default class VotingOperation extends React.Component {
 
   render() {
     const { voteStatus } = this.props.governance;
+    const { dfBalance } = this.props.common;
 
     return (
       <div className={styles.operation}>
@@ -271,6 +272,11 @@ export default class VotingOperation extends React.Component {
 
           <div className={styles.footer}>
             { this.renderVoteBtn() }
+
+            <div className={styles.footer__balance}>
+              <span>{ formatMessage({ id: 'common.dfBalance' }) }</span>
+              <label>{ formatVoteNum(dfBalance) }</label>
+            </div>
           </div>
         </section>
 
@@ -293,8 +299,20 @@ export default class VotingOperation extends React.Component {
             </div>
             { this.renderVoteResult() }
 
-            { voteStatus === 'closed' ? <img className={styles.detail__result_status} src={require('@assets/icon_closed.svg')} /> : null }
-            { voteStatus === 'fail' ? <img className={styles.detail__result_status} src={require('@assets/icon_fail.svg')} /> : null }
+            {
+              voteStatus === 'closed'
+              ? <div className={styles.detail__result_status}>
+                  <img src={require('@assets/icon_closed.svg')} />
+                </div>
+              : null
+            }
+            {
+              voteStatus === 'fail'
+              ? <div className={styles.detail__result_status}>
+                  <img src={require('@assets/icon_fail.svg')} />
+                </div>
+              : null
+            }
             {
               voteStatus === 'ongoing'
               ? <div className={styles.detail__result_ongoing}>
@@ -302,6 +320,9 @@ export default class VotingOperation extends React.Component {
                   <span>{ formatMessage({ id: 'voting.status.ongoing' }) }</span>
                 </div>
               : null
+            }
+            {
+              voteStatus === 'fail' ? <p className={styles.detail__result_failure}>{ formatMessage({ id: 'common.failure' }) }</p> : null
             }
           </div>
         </section>

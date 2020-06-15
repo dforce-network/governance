@@ -84,6 +84,7 @@ const VotingList: React.FC<VotingListProps> = (props) => {
         return (
           <Button
             type="primary"
+            disabled={voteStatus === 'notStart'}
             onClick={() => {
               if (v.voteStatus && v.voteStatus === 'ongoing') {
                 router.push(`/vote/${v._id}`);

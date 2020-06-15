@@ -24,6 +24,8 @@ const VotingTime: React.FC<VotingTimeProps> = (props) => {
         leftDays = tempTime.days();
         leftHours = tempTime.hours();
         leftMinutes = tempTime.minutes();
+      } else {
+        leftDays = leftHours = leftMinutes = 0;
       }
     } else {
       leftDays = leftHours = leftMinutes = 0;

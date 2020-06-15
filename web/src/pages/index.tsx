@@ -15,14 +15,27 @@ export default class IndexPage extends React.Component {
     initBrowserWallet.bind(this)(false);
   }
 
-  componentDidMount() {
+  initVoteData = (c) => {
     const me = this;
+    const hrefArray = window.location.href.split('/');
+    if (hrefArray && hrefArray.length) {
+      if (hrefArray[hrefArray.length - 1] === '') {
+        fetchDataOfTheContract.bind(me)(c);
+      }
+    }
+  }
+
+  componentDidMount() {
     this.initWaleltData();
 
     this.props.dispatch({
       type: 'governance/fetchVoteList',
       callback: (c) => {
-        fetchDataOfTheContract.bind(me)(c);
+        this.initVoteData(c);
+
+        setInterval(() => {
+          this.initVoteData(c);
+        }, 10000);
       }
     });
     document.getElementById('page__loader').style.display = 'none';

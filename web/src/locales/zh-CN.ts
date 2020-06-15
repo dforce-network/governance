@@ -46,6 +46,8 @@ export default {
 
   "voting.rule.title": "投票规则",
   "common.more": "了解详情",
+  "common.dfBalance": "DF余额",
+  "common.failure": "没有满足法定比列要求",
 
   "votelist.voteTime": "时间：",
 
@@ -53,4 +55,11 @@ export default {
   "voting.action.success": "成功",
   "voting.action.voting": "投票中",
   "voting.view": "查看",
+
+  "menu.assets": "资产协议",
+  "menu.assetsInfo": "合成型稳定币",
+  "menu.trade": "交易协议",
+  "menu.tradeInfo": "稳定资产闪兑",
+  "menu.governance": "治理",
+  "menu.governanceInfo": "DF代币分发",
 }

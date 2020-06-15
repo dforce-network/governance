@@ -123,7 +123,7 @@ export async function fetchDataOfTheContract(constractAddress: string) {
   const { web3, network, walletAddress, DFObj } = this.props.common;
   const networkName = network == 1 ? 'main' :'rinkeby';
 
-  if (constractAddress) {
+  if (constractAddress && web3) {
     const votingObj = new web3.eth.Contract(VotingABI, constractAddress);
     const DFObj = new web3.eth.Contract(DFABI, config[networkName].DF)
     const startTime = await votingObj.methods.startTime().call();
