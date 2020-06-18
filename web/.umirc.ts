@@ -5,15 +5,15 @@ const path = require('path');
 const config: IConfig =  {
   treeShaking: true,
   hash: true,
-  routes: [
-    {
-      path: '/',
-      component: '../layouts/index',
-      routes: [
-        { path: '/', component: '../pages/index' }
-      ]
-    }
-  ],
+  // routes: [
+  //   {
+  //     path: '/',
+  //     component: '../layouts/index',
+  //     routes: [
+  //       { path: '/', component: '../pages/index' }
+  //     ]
+  //   }
+  // ],
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
@@ -38,7 +38,7 @@ const config: IConfig =  {
     }],
   ],
   theme: {
-    'primary-color': '#5d52ff'
+    'primary-color': '#D5A14D'
   },
   alias: {
     '@utils': path.resolve(__dirname, './src/utils'),
@@ -46,6 +46,12 @@ const config: IConfig =  {
     '@services': path.resolve(__dirname, './src/services'),
     '@components': path.resolve(__dirname, './src/components'),
   },
+  proxy: {
+    "/votes": {
+      "target": "http://173.82.154.181:8000/",
+      "changeOrigin": true,
+    }
+  }
 }
 
 export default config;
