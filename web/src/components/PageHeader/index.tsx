@@ -4,7 +4,6 @@ import { accountHideFormatter } from '@utils';
 import { formatMessage } from 'umi-plugin-locale';
 import styles from './index.less';
 import Link from 'umi/link';
-import VotingAction from '../VotingAction';
 
 const downSvg = require('@assets/icon_xl.svg');
 const { Panel } = Collapse;
@@ -160,8 +159,6 @@ export default class PageHeader extends React.Component {
             </Panel>
           </Collapse>
         </Drawer>
-
-        <VotingAction { ...this.props } />
       </div>
     );
   }

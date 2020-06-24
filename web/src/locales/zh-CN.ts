@@ -27,6 +27,7 @@ export default {
   "voting.status.closed": '通过',
   "voting.status.ongoing": '投票进行中',
   "voting.status.fail": '失败',
+  "voting.status.notStart": "未开始",
   "voting.amount": "总量",
   "voting.participated": "参与投票的百分比",
   "voting.quorum": "法定比例",
@@ -49,7 +50,7 @@ export default {
   "common.dfBalance": "DF余额",
   "common.failure": "没有满足法定比列要求",
 
-  "votelist.voteTime": "时间：",
+  "votelist.voteTime": "时间:",
 
   "voting.action.failure": "失败",
   "voting.action.success": "成功",

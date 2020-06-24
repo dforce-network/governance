@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './index.less';
 import moment from 'moment';
 import { formatMessage } from 'umi-plugin-locale';
+import VotingAction from '../VotingAction';
 
 interface VotingTimeProps {
   className?: string;
@@ -50,6 +51,8 @@ const VotingTime: React.FC<VotingTimeProps> = (props) => {
           { leftMinutes }<label>{ formatMessage({ id: 'voting.time.MINUTES' }) }</label>
         </span>
       </div>
+
+      <VotingAction { ...props } />
     </div>
   );
 }

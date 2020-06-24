@@ -128,14 +128,33 @@ export default {
           filterResult[0].sumVote = sumVote;
         }
 
-        voteListData.sort((a, b) => {
-          if (a.voteStatus === 'ongoing' && b.voteStatus !== 'ongoing') {
-            return -1;
-          } else if (a.voteStatus !== 'ongoing' && b.voteStatus === 'ongoing') {
-            return 1;
+        // voteListData.sort((a, b) => {
+        //   if (a.voteStatus === 'ongoing' && b.voteStatus !== 'ongoing') {
+        //     return -1;
+        //   } else if (a.voteStatus !== 'ongoing' && b.voteStatus === 'ongoing') {
+        //     return 1;
+        //   } else {
+        //     return 0;
+        //   }
+        // });
+
+        const sortNumber = {
+          ongoing: 4,
+          notStart: 3,
+          closed: 2,
+          fail: 1,
+        };
+
+        voteListData.map(item => {
+          if (item.voteStatus) {
+            item.voteSortNumber = sortNumber[item.voteStatus];
           } else {
-            return 0;
+            item.voteSortNumber = 0;
           }
+        });
+
+        voteListData.sort((a, b) => {
+          return b.voteSortNumber - a.voteSortNumber;
         });
       }
 

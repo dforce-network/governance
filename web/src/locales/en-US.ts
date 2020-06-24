@@ -28,8 +28,9 @@ export default {
   "voting.status.closed": 'PASSED',
   "voting.status.ongoing": 'Voting',
   "voting.status.fail": 'Fail',
+  "voting.status.notStart": "Not Start",
   "voting.amount": "Amount",
-  "voting.participated": "Percentage of DF participated",
+  "voting.participated": "% Percentage of DF participated",
   "voting.quorum": "Quorum",
   "voting.quorum.is": "is",
 

@@ -26,7 +26,7 @@ export default class VotingOperation extends React.Component {
 
     if (!this.state.userSelected) {
       if (+voteRecord) {
-        selectedIndex = voteRecord - 1;
+        // selectedIndex = voteRecord - 1;
       }
     }
 
@@ -59,13 +59,27 @@ export default class VotingOperation extends React.Component {
           className={ key === selectedIndex ? styles.options__item_selected : styles.options__item }
           key={item.key}
           onClick={() => {
-            //if (+voteRecord > 0) return;
-
-            if (this.props.governance.isAlive) {
-              this.setState({
-                selectedIndex: key,
-                userSelected: true,
-              });
+            if (+voteRecord !== (key + 1)) {
+              if (this.props.governance.isAlive) {
+                this.setState({
+                  selectedIndex: key,
+                  userSelected: +voteRecord !== (key + 1),
+                });
+                this.props.dispatch({
+                  type: 'governance/updateBtnLoading',
+                  payload: false,
+                });
+              }
+            } else {
+              if (this.props.governance.isAlive) {
+                this.setState({
+                  selectedIndex: key,
+                });
+                this.props.dispatch({
+                  type: 'governance/updateBtnLoading',
+                  payload: true,
+                });
+              }
             }
           }}
         >
@@ -108,6 +122,10 @@ export default class VotingOperation extends React.Component {
             payload: false
           });
 
+          this.setState({
+            selectedIndex: -1,
+          });
+
           // show the action panel if res success
           if (resSuccess) {
             dispatch({
@@ -137,7 +155,7 @@ export default class VotingOperation extends React.Component {
           },
         });
 
-        // hide after 3000ms
+        // hide after 3000 ms
         setTimeout(() => {
           dispatch({
             type: 'common/updateTransAction',
